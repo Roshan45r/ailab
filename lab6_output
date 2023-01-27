@@ -1,0 +1,22 @@
+Enter Rule :(~qv~pvr)^(~q^p)^q(~qv~pvr)^(~q^p)^q
+Enter Query : r
+**********Truth Table Reference**********
+kb alpha
+**********
+False True
+----------
+False False
+----------
+False True
+----------
+False False
+----------
+False True
+----------
+False False
+----------
+False True
+----------
+False False
+----------
+The Knowledge Base entails query
