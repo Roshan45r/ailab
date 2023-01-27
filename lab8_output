@@ -1,0 +1,6 @@
+Enter the first expression
+knows(y,f(x))
+Enter the second expression
+knows(rakshith,R)
+The substitutions are:
+['rakshith / y', 'R / f(x)']
