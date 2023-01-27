@@ -1,0 +1,57 @@
+| | 
+-+-+-
+ | | 
+-+-+-
+ | | 
+
+
+Computer goes first! Good luck.
+Positions are as follow:
+1, 2, 3 
+4, 5, 6 
+7, 8, 9 
+
+
+X| | 
+-+-+-
+| | 
+-+-+-
+| | 
+Enter the position for 'O':  5
+X| | 
+-+-+-
+ |O| 
+-+-+-
+ | | 
+
+
+X|X| 
+-+-+-
+|O| 
+-+-+-
+| | 
+
+
+Enter the position for 'O':  6
+X|X| 
+-+-+-
+ |O|O
+-+-+-
+ | | 
+
+
+X|X|X
+-+-+-
+ |O|O
+-+-+-
+ | | 
+
+
+Bot wins!
+Traceback (most recent call last):
+  File "<string>", line 163, in <module>
+  File "<string>", line 109, in compMove
+  File "<string>", line 27, in insertLetter
+  File "<frozen _sitebuiltins>", line 26, in __call__
+SystemExit: None
+> 
