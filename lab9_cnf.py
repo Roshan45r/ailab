@@ -1,14 +1,13 @@
 import re
 
 def getAttributes(string):
-    expr = '\\([^)]+\\)'
+    expr = '\([^)]+\)'
     matches = re.findall(expr, string)
     return [m for m in str(matches) if m.isalpha()]
 
 def getPredicates(string):
-    expr = '[a-z~]+\\([A-Za-z,]+\\)'
+    expr = '[a-z~]+\([A-Za-z,]+\)'
     return re.findall(expr, string)
-
 def DeMorgan(sentence):
     string = ''.join(list(sentence).copy())
     string = string.replace('~~','')
@@ -19,21 +18,20 @@ def DeMorgan(sentence):
         string = string.replace(predicate, f'~{predicate}')
     s = list(string)
     for i, c in enumerate(string):
-        if c == '|':
-            s[i] = '&'
-        elif c == '&':
-            s[i] = '|'
+        if c == 'V':
+            s[i] = '^'
+        elif c == '^':
+            s[i] = 'V'
     string = ''.join(s)    
     string = string.replace('~~','')
     return f'[{string}]' if flag else string
-
 def Skolemization(sentence):
     SKOLEM_CONSTANTS = [f'{chr(c)}' for c in range(ord('A'), ord('Z')+1)]
     statement = ''.join(list(sentence).copy())
     matches = re.findall('[∀∃].', statement)
     for match in matches[::-1]:
         statement = statement.replace(match, '')
-        statements = re.findall('\\[\\[[^]]+\\]]', statement)
+        statements = re.findall('\[\[[^]]+\]]', statement)
         for s in statements:
             statement = statement.replace(s, s[1:-1])
         for predicate in getPredicates(statement):
@@ -45,16 +43,15 @@ def Skolemization(sentence):
                 aU = [a for a in attributes if not a.islower()][0]
                 statement = statement.replace(aU, f'{SKOLEM_CONSTANTS.pop(0)}({aL[0] if len(aL) else match[1]})')
     return statement
-
 def fol_to_cnf(fol):
     
     statement = fol.replace("<=>", "_")
     while '_' in statement:
         i = statement.index('_')
-        new_statement = '[' + statement[:i] + '=>' + statement[i+1:] + ']&['+ statement[i+1:] + '=>' + statement[:i] + ']'
+        new_statement = '[' + statement[:i] + '=>' + statement[i+1:] + ']^['+ statement[i+1:] + '=>' + statement[:i] + ']'
         statement = new_statement
     statement = statement.replace("=>", "-")
-    expr = '\\[([^]]+)\\]'
+    expr = '\[([^]]+)\]'
     statements = re.findall(expr, statement)
     for i, s in enumerate(statements):
         if '[' in s and ']' not in s:
@@ -64,7 +61,7 @@ def fol_to_cnf(fol):
     while '-' in statement:
         i = statement.index('-')
         br = statement.index('[') if '[' in statement else 0
-        new_statement = '~' + statement[br:i] + '|' + statement[i+1:]
+        new_statement = '~' + statement[br:i] + 'V' + statement[i+1:]
         statement = statement[:br] + new_statement if br > 0 else new_statement
     while '~∀' in statement:
         i = statement.index('~∀')
@@ -78,19 +75,18 @@ def fol_to_cnf(fol):
         statement = ''.join(s)
     statement = statement.replace('~[∀','[~∀')
     statement = statement.replace('~[∃','[~∃')
-    expr = '(~[∀|∃].)'
+    expr = '(~[∀V∃].)'
     statements = re.findall(expr, statement)
     for s in statements:
         statement = statement.replace(s, fol_to_cnf(s))
-    expr = '~\\[[^]]+\\]'
+    expr = '~\[[^]]+\]'
     statements = re.findall(expr, statement)
     for s in statements:
         statement = statement.replace(s, DeMorgan(s))
     return statement
-
-
-n = int(input("enter the number of statements you want to convert:"))
-while n:
-  statement = input("Enter FOL statement: ")
-  print(f"FOL converted to CNF: {Skolemization(fol_to_cnf(statement))} \n\n")
-  n -= 1
+def main():
+    print("Enter FOL:")
+    fol = input()
+    print("The CNF form of the given FOL is: ")
+    print(Skolemization(fol_to_cnf(fol)))
+main()
