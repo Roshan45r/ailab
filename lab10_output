@@ -1,0 +1,23 @@
+Enter KB: (enter e to exit)
+missile(x)=>weapon(x)
+missile(m1)
+enemy(x,america)=>hostile(x)
+american(west)
+enemy(china,america)
+owns(china,m1)
+missile(x)&owns(china,x)=>sells(west,x,china)
+american(x)&weapon(y)&sells(x,y,z)&hostile(z)=>criminal(x)
+e
+Enter Query:
+criminal(x)
+Querying criminal(x):
+        1. criminal(west)
+All facts: 
+        1. hostile(china)
+        2. missile(m1)
+        3. sells(west,m1,china)
+        4. enemy(china,america)
+        5. weapon(m1)
+        6. criminal(west)
+        7. american(west)
+        8. owns(china,m1)
