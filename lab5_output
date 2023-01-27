@@ -1,10 +1,11 @@
-Enter Location of Vacuum: B
-Enter status of B: 1
-Enter status of other room: 0
+Enter Location of Vacuum: A
+Enter status of A: 1
+Enter status of other room: 1
 Initial Location Condition{'A': '0', 'B': '0'}
 GOAL STATE: 
 {'A': '0', 'B': '0'}
 Actions Taken are: 
+Suck at Location A
+Move to Location B
 Suck at Location B
-Move to Location A
-Performance Measurement: 1
+Performance Measurement: 3
