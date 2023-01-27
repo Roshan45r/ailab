@@ -4,14 +4,13 @@ def isVariable(x):
     return len(x) == 1 and x.islower() and x.isalpha()
 
 def getAttributes(string):
-    expr = '\\([^)]+\\)'
+    expr = '\([^)]+\)'
     matches = re.findall(expr, string)
     return matches
 
 def getPredicates(string):
-    expr = '([a-z~]+)\\([^&|]+\\)'
+    expr = '([a-z~]+)\([^&|]+\)'
     return re.findall(expr, string)
-
 class Fact:
     def __init__(self, expression):
         self.expression = expression
@@ -38,7 +37,6 @@ class Fact:
         c = constants.copy()
         f = f"{self.predicate}({','.join([constants.pop(0) if isVariable(p) else p for p in self.params])})"
         return Fact(f)
-    
 class Implication:
     def __init__(self, expression):
         self.expression = expression
@@ -62,7 +60,6 @@ class Implication:
                 attributes = attributes.replace(key, constants[key])
         expr = f'{predicate}{attributes}'
         return Fact(expr) if len(new_lhs) and all([f.getResult() for f in new_lhs]) else None
-
 class KB:
     def __init__(self):
         self.facts = set()
@@ -91,15 +88,16 @@ class KB:
         print("All facts: ")
         for i, f in enumerate(set([f.expression for f in self.facts])):
             print(f'\t{i+1}. {f}')
-
-kb = KB()
-kb.tell('missile(x)=>weapon(x)')
-kb.tell('missile(M1)')
-kb.tell('enemy(x,America)=>hostile(x)')
-kb.tell('american(West)')
-kb.tell('enemy(Nono,America)')
-kb.tell('owns(Nono,M1)')
-kb.tell('missile(x)&owns(Nono,x)=>sells(West,x,Nono)')
-kb.tell('american(x)&weapon(y)&sells(x,y,z)&hostile(z)=>criminal(x)')
-kb.query('criminal(x)')
-kb.display()
+def main():
+    kb = KB()
+    print("Enter KB: (enter e to exit)")
+    while True:
+        t = input()
+        if(t == 'e'):
+            break
+        kb.tell(t)
+    print("Enter Query:")
+    q = input()
+    kb.query(q)
+    kb.display()
+main()
